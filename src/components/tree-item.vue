@@ -5,11 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import { TreeData } from "./index"
+import { ref } from "vue";
+import { TreeData } from "./index";
 
 const props = defineProps<{
-  data: TreeData
+  data: TreeData;
 }>();
 
 const count = ref(0);

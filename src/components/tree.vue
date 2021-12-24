@@ -1,11 +1,7 @@
 <template>
   <div role="tree">
     <ul role="group">
-      <tree-item
-        v-for="(child, index) in data"
-        :key="index"
-        :data="child"
-      >
+      <tree-item v-for="(child, index) in data" :key="index" :data="child">
         <slot>
           <i role="presentation"></i>
         </slot>
@@ -16,21 +12,20 @@
 
 <script lang="ts">
 export default {
-  name: 'VTree',
-}
+  name: "VTree",
+};
 </script>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import TreeItem from './tree-item.vue'
-import { TreeData } from "./index"
+import { ref } from "vue";
+import TreeItem from "./tree-item.vue";
+import { TreeData } from "./index";
 
 const props = defineProps<{
-  data: Array<TreeData>
+  data: Array<TreeData>;
 }>();
 
 const count = ref(0);
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

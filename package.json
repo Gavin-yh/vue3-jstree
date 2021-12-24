@@ -6,7 +6,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "format": "prettier --write",
-    "prettier": "prettier --ignore-path .gitignore --write \"src/**/*.+(ts|tsx|vue)\""
+    "prettier": "prettier --ignore-path .gitignore --write \"src/**/*.+(ts|tsx|vue)\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "vue": "^3.2.25"

@@ -1,6 +1,6 @@
-export interface TreeData{
-  text: string
-  icon?: string
-  opended?: boolean
-  children?: Array<TreeData>
+export interface TreeData {
+  text: string;
+  icon?: string;
+  opended?: boolean;
+  children?: Array<TreeData>;
 }
