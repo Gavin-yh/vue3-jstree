@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import TreeItem from './components/tree-item.vue'
-
+import TreeItem from "./components/tree-item.vue";
 </script>
 
 <style>

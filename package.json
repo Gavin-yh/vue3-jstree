@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write",
+    "prettier": "prettier --ignore-path .gitignore --write \"src/**/*.+(ts|tsx|vue)\""
   },
   "dependencies": {
     "vue": "^3.2.25"
@@ -12,9 +14,17 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",
     "husky": "^7.0.4",
+    "lint-staged": "^12.1.4",
+    "prettier": "^2.5.1",
     "sass": "^1.45.1",
     "typescript": "^4.4.4",
     "vite": "^2.7.2",
     "vue-tsc": "^0.29.8"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,vue}": [
+      "npm run prettier",
+      "git add ."
+    ]
   }
 }
