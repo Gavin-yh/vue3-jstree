@@ -1,9 +1,26 @@
 <template>
-  <tree-item msg="Vue3 js tree" />
+  <v-tree :data="data" />
 </template>
 
 <script setup lang="ts">
-import TreeItem from "./components/tree-item.vue";
+import { ref, Ref } from 'vue'
+import { TreeData } from './components';
+import VTree from "./components/tree.vue";
+
+const data: Ref<Array<TreeData>> = ref([{
+  text: '文件',
+  children: [{
+    text: '文件1'
+  }]
+}, {
+  text: '文件',
+  children: [{
+    text: '文件1'
+  }]
+}])
+
+console.log(VTree.name)
+
 </script>
 
 <style>

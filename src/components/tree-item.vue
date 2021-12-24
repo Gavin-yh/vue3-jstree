@@ -1,14 +1,15 @@
 <template>
-  组件{{ count }}
-
-  <p>{{ props.msg }}</p>
+  <li>
+    {{ data.text }}
+  </li>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from "vue"
+import { TreeData } from "./index"
 
 const props = defineProps<{
-  msg: string;
+  data: TreeData
 }>();
 
 const count = ref(0);
