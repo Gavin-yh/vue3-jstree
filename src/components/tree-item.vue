@@ -10,10 +10,10 @@
     <i
       :class="{
         'tree-anchor': props.data?.children,
-        'tree-icon': props.data?.children,
+        'tree-icon': props.data?.children?.length,
       }"
       role="presentation"
-      @click="handleItemToggle(props.data)"
+      @click="props.data.opended = !props.data.opended"
     ></i>
 
     <div
@@ -26,7 +26,7 @@
       <i
         class="tree-icon"
         :class="{
-          'no-filder': !props.data?.children,
+          'no-filder': !props.data?.children?.length,
         }"
         role="presentation"
       ></i>
@@ -38,6 +38,7 @@
         v-for="(child, index) in props.data?.children"
         :key="index"
         :data="child"
+        @iconClick="props.data.opended = !props.data.opended"
       >
       </tree-item>
     </ul>
@@ -52,18 +53,20 @@ export default {
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { TreeData } from "./index";
+import { innerTreeData } from "./index";
 
 const props = defineProps<{
-  data: TreeData;
+  data: innerTreeData;
 }>();
+
+const emit = defineEmits(["iconClick"]);
 
 const isFolder = computed(() => {
   return props.data.children && props.data.children.length;
 });
 
-function handleItemToggle(data: TreeData) {
-  props.data.opended = !data.opended;
+function handleItemToggle(id: number) {
+  emit("iconClick", id);
 }
 </script>
 

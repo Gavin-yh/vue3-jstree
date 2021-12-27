@@ -6,3 +6,7 @@ export interface TreeData {
   isHover?: boolean;
   children?: Array<TreeData>;
 }
+
+export interface innerTreeData extends TreeData {
+  id: number;
+}

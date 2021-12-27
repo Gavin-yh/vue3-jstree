@@ -2,11 +2,11 @@
   <div role="tree">
     <ul role="group">
       <tree-item
-        v-for="(child, index) in newTreeData"
+        v-for="(child, index) in treeData"
         :key="index"
         :data="child"
-      >
-      </tree-item>
+        @iconClick="iconClick"
+      ></tree-item>
     </ul>
   </div>
 </template>
@@ -18,18 +18,23 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch, Ref } from "vue";
 import TreeItem from "./tree-item.vue";
-import { TreeData } from "./index";
+import { TreeData, innerTreeData } from "./index";
+
+let TREE_ID: number = 1;
 
 const props = defineProps<{
   data: Array<TreeData>;
 }>();
 
-const newTreeData = computed(() => {
-  return props.data.map((item) => {
-    return {
-      id: new Date().getDate(),
+const treeData: Ref<Array<innerTreeData>> = ref([]);
+
+function formatItem(data: Array<TreeData>, anchorID: number) {
+  return data.map((item) => {
+    const newData = {
+      id: TREE_ID++,
+      anchorID,
       text: item.text || "未知文件",
       opended: item.opended || false,
       selected: item.selected || false,
@@ -37,10 +42,50 @@ const newTreeData = computed(() => {
       children: item.children || [],
       icon: item.icon || "",
     };
-  });
-});
 
-const count = ref(0);
+    if (item.children) {
+      newData.children = formatItem(item.children, anchorID);
+    }
+
+    return newData;
+  });
+}
+
+watch(
+  () => props.data,
+  (data) => {
+    treeData.value = data.map((item) => {
+      const data = {
+        id: TREE_ID++,
+        text: item.text || "未知文件",
+        opended: item.opended || false,
+        selected: item.selected || false,
+        disabled: item.selected || false,
+        children: item.children ? formatItem(item.children, TREE_ID) : [],
+        icon: item.icon || "",
+      };
+      return data;
+    });
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
+
+// function iconClick(id: number) {
+//   treeData.value = treeData.value.map(item => {
+//     if (item.id === id) {
+//       return {
+//         ...item,
+//         opended: !item.opended
+//       }
+//     }
+
+//     return item
+//   })
+//   debugger
+// }
 </script>
 
 <style>

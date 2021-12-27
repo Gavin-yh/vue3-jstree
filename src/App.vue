@@ -12,7 +12,6 @@ import VTree from "./components/tree.vue";
 const data: Ref<Array<TreeData>> = ref([
   {
     text: "文件",
-    opended: true,
     children: [
       {
         text: "文件1",
@@ -22,6 +21,14 @@ const data: Ref<Array<TreeData>> = ref([
           },
           {
             text: "文本3",
+            children: [
+              {
+                text: "文件1",
+              },
+              {
+                text: "文本3",
+              },
+            ],
           },
         ],
       },
@@ -48,11 +55,6 @@ const data: Ref<Array<TreeData>> = ref([
   },
   {
     text: "文件",
-    children: [
-      {
-        text: "文件1",
-      },
-    ],
   },
 ]);
 
