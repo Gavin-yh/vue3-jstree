@@ -6,6 +6,7 @@
       'is-close': !props.data?.opended,
     }"
     role="treeitem"
+    @click.stop="props.data.opended = !props.data.opended"
   >
     <i
       :class="{
@@ -13,7 +14,6 @@
         'tree-icon': props.data?.children?.length,
       }"
       role="presentation"
-      @click="props.data.opended = !props.data.opended"
     ></i>
 
     <div
@@ -52,7 +52,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { innerTreeData } from "./index";
 
 const props = defineProps<{
@@ -63,6 +63,78 @@ const emit = defineEmits([]);
 
 const isFolder = computed(() => {
   return props.data.children && props.data.children.length;
+});
+
+function showMenu(e: MouseEvent) {
+  const menus = menuSinglton.getInstance() as HTMLElement;
+
+  menus.style.top = `${e.clientY}px`;
+  menus.style.position = "absolute";
+  menus.style.left = `${e.clientX}px`;
+  menus.style.display = "block";
+}
+
+onMounted(() => {
+  document.oncontextmenu = function (e: MouseEvent) {
+    e.preventDefault();
+
+    showMenu(e);
+  };
+});
+
+function createMenu(options: any) {
+  const ul = document.createElement("ul");
+  const { menus } = options;
+
+  if (menus && menus.length > 0) {
+    for (let menu of menus) {
+      const li = document.createElement("li");
+      li.textContent = menu.name;
+      li.onclick = menu.onClick;
+      ul.appendChild(li);
+    }
+  }
+  const body = document.querySelector("body")!;
+  body.appendChild(ul);
+  return ul;
+}
+
+function ContextMenu(options: any) {
+  // 唯一实例
+  let instance: Element;
+
+  return {
+    // 获取实例的唯一方式
+    getInstance: function () {
+      if (!instance) {
+        instance = createMenu(options);
+      }
+      return instance;
+    },
+  };
+}
+
+const menuSinglton = ContextMenu({
+  menus: [
+    {
+      name: "custom menu 1",
+      onClick: function (e: Event) {
+        console.log("menu1 clicked");
+      },
+    },
+    {
+      name: "custom menu 2",
+      onClick: function (e: Event) {
+        console.log("menu2 clicked");
+      },
+    },
+    {
+      name: "custom menu 3",
+      onClick: function (e: Event) {
+        console.log("menu3 clicked");
+      },
+    },
+  ],
 });
 </script>
 
