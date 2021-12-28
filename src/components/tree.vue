@@ -5,7 +5,6 @@
         v-for="(child, index) in treeData"
         :key="index"
         :data="child"
-        @iconClick="iconClick"
       ></tree-item>
     </ul>
   </div>
@@ -72,20 +71,6 @@ watch(
     immediate: true,
   }
 );
-
-// function iconClick(id: number) {
-//   treeData.value = treeData.value.map(item => {
-//     if (item.id === id) {
-//       return {
-//         ...item,
-//         opended: !item.opended
-//       }
-//     }
-
-//     return item
-//   })
-//   debugger
-// }
 </script>
 
 <style>

@@ -59,15 +59,11 @@ const props = defineProps<{
   data: innerTreeData;
 }>();
 
-const emit = defineEmits(["iconClick"]);
+const emit = defineEmits([]);
 
 const isFolder = computed(() => {
   return props.data.children && props.data.children.length;
 });
-
-function handleItemToggle(id: number) {
-  emit("iconClick", id);
-}
 </script>
 
 <style scoped lang="scss">
