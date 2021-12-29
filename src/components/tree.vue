@@ -5,6 +5,7 @@
         v-for="(child, index) in treeData"
         :key="index"
         :data="child"
+        :menu="menu"
         @onContextmenu="onContextmenu"
       ></tree-item>
     </ul>
@@ -18,9 +19,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, ref, watch, Ref } from "vue";
+import { ref, watch, Ref } from "vue";
 import TreeItem from "./tree-item.vue";
 import { TreeData, innerTreeData } from "./index";
+import CreateMenu from "./createMenu";
 
 let TREE_ID: number = 1;
 
@@ -29,6 +31,22 @@ const props = defineProps<{
 }>();
 
 const treeData: Ref<Array<innerTreeData>> = ref([]);
+
+//custom menu
+const menu: CreateMenu = new CreateMenu([
+  {
+    name: "重命名",
+    onClick: function (e: Event) {
+      menu.hiddenMenu(e);
+    },
+  },
+  {
+    name: "删除",
+    onClick: function (e: Event) {
+      menu.hiddenMenu(e);
+    },
+  },
+]);
 
 // format tree child data
 function formatItem(data: Array<TreeData>, anchorID: number) {
@@ -52,6 +70,7 @@ function formatItem(data: Array<TreeData>, anchorID: number) {
   });
 }
 
+// watch props.data and format
 watch(
   () => props.data,
   (data) => {
@@ -74,87 +93,43 @@ watch(
   }
 );
 
-function createMenu(options: any) {
-  const ul = document.createElement("ul");
-  ul.style.display = "none";
-  const { menus } = options;
-
-  if (menus && menus.length > 0) {
-    for (let menu of menus) {
-      const li = document.createElement("li");
-      li.textContent = menu.name;
-      li.onclick = menu.onClick;
-      ul.appendChild(li);
-    }
-  }
-  const body = document.querySelector("body")!;
-  body.appendChild(ul);
-  return ul;
-}
-
-function ContextMenu(options: any) {
-  // 唯一实例
-  let instance: Element;
-
-  return {
-    // 获取实例的唯一方式
-    getInstance: function () {
-      if (!instance) {
-        instance = createMenu(options);
-      }
-      return instance;
-    },
-  };
-}
-
-const menuSinglton = ContextMenu({
-  menus: [
-    {
-      name: "custom menu 1",
-      onClick: function (e: Event) {
-        console.log("menu1 clicked");
-      },
-    },
-    {
-      name: "custom menu 2",
-      onClick: function (e: Event) {
-        console.log("menu2 clicked");
-      },
-    },
-    {
-      name: "custom menu 3",
-      onClick: function (e: Event) {
-        console.log("menu3 clicked");
-      },
-    },
-  ],
-});
-
-function showMenu(e: MouseEvent) {
-  menus.style.top = `${e.clientY}px`;
-  menus.style.position = "absolute";
-  menus.style.left = `${e.clientX}px`;
-  menus.style.display = "block";
-}
-
 function onContextmenu(e: MouseEvent) {
   e.preventDefault();
 
-  showMenu(e);
+  menu.showMenu(e);
 }
-
-const menus: HTMLElement = menuSinglton.getInstance() as HTMLElement;
 </script>
 
-<style>
+<style lang="scss">
 ul {
   padding: 0;
   margin: 0;
+
+  li {
+    list-style-type: none;
+    text-align: left;
+  }
 }
 
-ul li {
-  list-style-type: none;
-  text-align: left;
+.tree-custom-menu {
+  display: none;
+  position: absolute;
+  font-size: 12px;
+  background: #fff;
+  box-shadow: 0px 1px 2px #938e8c;
+
+  & > li {
+    padding: 6px 24px;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  & > li:not(:last-child) {
+    border-bottom: 1px solid #d9d6d6;
+  }
 }
 </style>
 

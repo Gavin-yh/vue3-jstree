@@ -6,7 +6,7 @@
       'is-close': !props.data?.opended,
     }"
     role="treeitem"
-    @click.stop="props.data.opended = !props.data.opended"
+    @click.stop="(e) => onNodeCLick(e, props.data)"
     @mouseover.stop="props.data.isHover = !props.data.isHover"
     @mouseout.stop="props.data.isHover = !props.data.isHover"
     @contextmenu.stop="onContextmenu"
@@ -48,6 +48,7 @@
         v-for="(child, index) in props.data?.children"
         :key="index"
         :data="child"
+        :menu="props.menu"
         @iconClick="props.data.opended = !props.data.opended"
         @onContextmenu="onContextmenu"
       >
@@ -63,18 +64,25 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { innerTreeData } from "./index";
+import CreateMenu from "./createMenu";
 
 const props = defineProps<{
   data: innerTreeData;
+  menu: CreateMenu;
 }>();
 
-const emit = defineEmits(["onContextmenu"]);
+const emit = defineEmits(["onContextmenu", "onNodeClick"]);
 
 const isFolder = computed(() => {
   return props.data.children && props.data.children.length;
 });
+
+function onNodeCLick(e: Event, data: innerTreeData) {
+  data.opended = !data.opended;
+  props.menu.hiddenMenu(e);
+}
 
 function onContextmenu(e: MouseEvent) {
   emit("onContextmenu", e);
