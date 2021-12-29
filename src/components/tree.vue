@@ -1,10 +1,11 @@
 <template>
   <div role="tree">
-    <ul role="group">
+    <ul role="group" class="tree">
       <tree-item
         v-for="(child, index) in treeData"
         :key="index"
         :data="child"
+        @onContextmenu="onContextmenu"
       ></tree-item>
     </ul>
   </div>
@@ -29,6 +30,7 @@ const props = defineProps<{
 
 const treeData: Ref<Array<innerTreeData>> = ref([]);
 
+// format tree child data
 function formatItem(data: Array<TreeData>, anchorID: number) {
   return data.map((item) => {
     const newData = {
@@ -71,6 +73,77 @@ watch(
     immediate: true,
   }
 );
+
+function createMenu(options: any) {
+  const ul = document.createElement("ul");
+  ul.style.display = "none";
+  const { menus } = options;
+
+  if (menus && menus.length > 0) {
+    for (let menu of menus) {
+      const li = document.createElement("li");
+      li.textContent = menu.name;
+      li.onclick = menu.onClick;
+      ul.appendChild(li);
+    }
+  }
+  const body = document.querySelector("body")!;
+  body.appendChild(ul);
+  return ul;
+}
+
+function ContextMenu(options: any) {
+  // 唯一实例
+  let instance: Element;
+
+  return {
+    // 获取实例的唯一方式
+    getInstance: function () {
+      if (!instance) {
+        instance = createMenu(options);
+      }
+      return instance;
+    },
+  };
+}
+
+const menuSinglton = ContextMenu({
+  menus: [
+    {
+      name: "custom menu 1",
+      onClick: function (e: Event) {
+        console.log("menu1 clicked");
+      },
+    },
+    {
+      name: "custom menu 2",
+      onClick: function (e: Event) {
+        console.log("menu2 clicked");
+      },
+    },
+    {
+      name: "custom menu 3",
+      onClick: function (e: Event) {
+        console.log("menu3 clicked");
+      },
+    },
+  ],
+});
+
+function showMenu(e: MouseEvent) {
+  menus.style.top = `${e.clientY}px`;
+  menus.style.position = "absolute";
+  menus.style.left = `${e.clientX}px`;
+  menus.style.display = "block";
+}
+
+function onContextmenu(e: MouseEvent) {
+  e.preventDefault();
+
+  showMenu(e);
+}
+
+const menus: HTMLElement = menuSinglton.getInstance() as HTMLElement;
 </script>
 
 <style>
@@ -85,4 +158,8 @@ ul li {
 }
 </style>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.tree {
+  position: relative;
+}
+</style>
