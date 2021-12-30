@@ -97,6 +97,7 @@ watch(
   }
 );
 
+// create custom contextmenu
 function onContextmenu(e: MouseEvent, data: innerTreeData) {
   e.preventDefault();
 
@@ -105,6 +106,7 @@ function onContextmenu(e: MouseEvent, data: innerTreeData) {
   menu.showMenu(e);
 }
 
+// emit event
 Emit.on("contextMenu", onContextmenu);
 </script>
 
