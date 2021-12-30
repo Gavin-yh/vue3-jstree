@@ -9,7 +9,7 @@
     @click.stop="(e) => onNodeCLick(e, props.data)"
     @mouseover.stop="props.data.isHover = !props.data.isHover"
     @mouseout.stop="props.data.isHover = !props.data.isHover"
-    @contextmenu.stop="onContextmenu"
+    @contextmenu.stop="(e) => onContextmenu(e, props.data)"
   >
     <div
       role="presentation"
@@ -50,7 +50,6 @@
         :data="child"
         :menu="props.menu"
         @iconClick="props.data.opended = !props.data.opended"
-        @onContextmenu="onContextmenu"
       >
       </tree-item>
     </ul>
@@ -66,14 +65,15 @@ export default {
 <script setup lang="ts">
 import { computed } from "vue";
 import { innerTreeData } from "./index";
-import CreateMenu from "./createMenu";
+import CreateMenu from "../util/createMenu";
+import Emit from "../util/event";
 
 const props = defineProps<{
   data: innerTreeData;
   menu: CreateMenu;
 }>();
 
-const emit = defineEmits(["onContextmenu", "onNodeClick"]);
+const emit = defineEmits([""]);
 
 const isFolder = computed(() => {
   return props.data.children && props.data.children.length;
@@ -84,8 +84,9 @@ function onNodeCLick(e: Event, data: innerTreeData) {
   props.menu.hiddenMenu(e);
 }
 
-function onContextmenu(e: MouseEvent) {
-  emit("onContextmenu", e);
+// tree-item recurse self and to use emit bus
+function onContextmenu(e: MouseEvent, data: innerTreeData) {
+  Emit.emit("contextMenu", e, data);
 }
 </script>
 

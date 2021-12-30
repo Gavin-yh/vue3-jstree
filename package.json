@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "eventemitter3": "^4.0.7",
     "vue": "^3.2.25"
   },
   "devDependencies": {

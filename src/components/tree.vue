@@ -6,7 +6,6 @@
         :key="index"
         :data="child"
         :menu="menu"
-        @onContextmenu="onContextmenu"
       ></tree-item>
     </ul>
   </div>
@@ -22,7 +21,8 @@ export default {
 import { ref, watch, Ref } from "vue";
 import TreeItem from "./tree-item.vue";
 import { TreeData, innerTreeData } from "./index";
-import CreateMenu from "./createMenu";
+import CreateMenu from "../util/createMenu";
+import Emit from "../util/event";
 
 let TREE_ID: number = 1;
 
@@ -30,7 +30,11 @@ const props = defineProps<{
   data: Array<TreeData>;
 }>();
 
+// formatted tree data
 const treeData: Ref<Array<innerTreeData>> = ref([]);
+
+// contextmenu select tree id
+const targetTreeID: Ref<number> = ref(0);
 
 //custom menu
 const menu: CreateMenu = new CreateMenu([
@@ -93,11 +97,15 @@ watch(
   }
 );
 
-function onContextmenu(e: MouseEvent) {
+function onContextmenu(e: MouseEvent, data: innerTreeData) {
   e.preventDefault();
 
+  // record click file`s id
+  targetTreeID.value = data.id;
   menu.showMenu(e);
 }
+
+Emit.on("contextMenu", onContextmenu);
 </script>
 
 <style lang="scss">
