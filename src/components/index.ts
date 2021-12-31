@@ -4,6 +4,7 @@ export interface TreeData {
   opended?: boolean;
   selected?: boolean;
   isHover?: boolean;
+  rename?: boolean;
   children?: Array<TreeData>;
 }
 

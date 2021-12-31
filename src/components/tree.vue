@@ -36,22 +36,6 @@ const treeData: Ref<Array<innerTreeData>> = ref([]);
 // contextmenu select tree id
 const targetTreeID: Ref<number> = ref(0);
 
-//custom menu
-const menu: CreateMenu = new CreateMenu([
-  {
-    name: "重命名",
-    onClick: function (e: Event) {
-      menu.hiddenMenu(e);
-    },
-  },
-  {
-    name: "删除",
-    onClick: function (e: Event) {
-      menu.hiddenMenu(e);
-    },
-  },
-]);
-
 // format tree child data
 function formatItem(data: Array<TreeData>, anchorID: number) {
   return data.map((item) => {
@@ -64,6 +48,7 @@ function formatItem(data: Array<TreeData>, anchorID: number) {
       disabled: item.selected || false,
       children: item.children || [],
       icon: item.icon || "",
+      rename: item.rename || false,
     };
 
     if (item.children) {
@@ -87,6 +72,7 @@ watch(
         disabled: item.selected || false,
         children: item.children ? formatItem(item.children, TREE_ID) : [],
         icon: item.icon || "",
+        rename: item.rename || false,
       };
       return data;
     });
@@ -96,6 +82,24 @@ watch(
     immediate: true,
   }
 );
+
+//custom menu
+const menu: CreateMenu = new CreateMenu([
+  {
+    name: "重命名",
+    onClick: function (e: Event) {
+      menu.hiddenMenu(e);
+      menu.fileReName(targetTreeID.value);
+    },
+  },
+  {
+    name: "删除",
+    onClick: function (e: Event) {
+      menu.hiddenMenu(e);
+      menu.fileDelete(targetTreeID.value);
+    },
+  },
+]);
 
 // create custom contextmenu
 function onContextmenu(e: MouseEvent, data: innerTreeData) {
