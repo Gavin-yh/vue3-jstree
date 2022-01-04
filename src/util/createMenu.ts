@@ -48,14 +48,4 @@ export default class CreateMenu {
 
     menus.style.display = "none";
   }
-
-  /**
-   * 菜单名修改
-   */
-  fileReName(treeID: number) {}
-
-  /**
-   * 菜单名修改
-   */
-  fileDelete(treeID: number) {}
 }

@@ -42,11 +42,14 @@
       ></i>
       <span v-if="!data.rename">{{ data.text }}</span>
       <input
-        class="tree-node__input"
         v-else
+        :id="props.data.id + ''"
+        class="tree-node__input"
         type="text"
         :value="data.text"
-        @input="onRename"
+        @input="(e) => onRename(e, props.data)"
+        @blur="(e) => onBlur(e, props.data)"
+        @click.stop="(e) => {}"
       />
     </div>
 
@@ -71,7 +74,7 @@ export default {
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { innerTreeData } from "./index";
+import { innerTreeData } from "../util/index";
 import CreateMenu from "../util/createMenu";
 import Emit from "../util/event";
 
@@ -97,7 +100,15 @@ function onContextmenu(e: MouseEvent, data: innerTreeData) {
 }
 
 // rename
-function onRename(e: InputEvent) {}
+function onRename(e: Event, data: innerTreeData) {
+  const value = e.srcElement!.value || "";
+
+  data.text = value;
+}
+
+function onBlur(e: Event, data: innerTreeData) {
+  data.rename = !data.rename;
+}
 </script>
 
 <style scoped lang="scss">
@@ -148,6 +159,11 @@ function onRename(e: InputEvent) {}
 
   &__input {
     border: 1px solid #dbcfcf;
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__children {

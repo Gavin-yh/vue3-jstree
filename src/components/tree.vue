@@ -18,9 +18,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, watch, Ref } from "vue";
+import { ref, watch, Ref, nextTick } from "vue";
 import TreeItem from "./tree-item.vue";
-import { TreeData, innerTreeData } from "./index";
+import { TreeData, innerTreeData } from "../util/index";
 import CreateMenu from "../util/createMenu";
 import Emit from "../util/event";
 
@@ -34,7 +34,7 @@ const props = defineProps<{
 const treeData: Ref<Array<innerTreeData>> = ref([]);
 
 // contextmenu select tree id
-const targetTreeID: Ref<number> = ref(0);
+const targetTree: Ref<innerTreeData> = ref({} as innerTreeData);
 
 // format tree child data
 function formatItem(data: Array<TreeData>, anchorID: number) {
@@ -89,14 +89,19 @@ const menu: CreateMenu = new CreateMenu([
     name: "重命名",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
-      menu.fileReName(targetTreeID.value);
+      targetTree.value.rename = !targetTree.value.rename;
+
+      nextTick(() => {
+        const input = document.getElementById(`${targetTree.value.id}`);
+
+        input?.focus();
+      });
     },
   },
   {
     name: "删除",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
-      menu.fileDelete(targetTreeID.value);
     },
   },
 ]);
@@ -105,8 +110,8 @@ const menu: CreateMenu = new CreateMenu([
 function onContextmenu(e: MouseEvent, data: innerTreeData) {
   e.preventDefault();
 
-  // record click file`s id
-  targetTreeID.value = data.id;
+  // record click file data
+  targetTree.value = data;
   menu.showMenu(e);
 }
 

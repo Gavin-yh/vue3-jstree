@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { ref, Ref } from "vue";
-import { TreeData } from "./components";
+import { TreeData } from "./util";
 import VTree from "./components/tree.vue";
 
 const data: Ref<Array<TreeData>> = ref([
@@ -15,14 +15,12 @@ const data: Ref<Array<TreeData>> = ref([
     children: [
       {
         text: "文件1",
-        rename: true,
         children: [
           {
             text: "文件1",
           },
           {
             text: "文本3",
-            rename: true,
             children: [
               {
                 text: "文件1",
