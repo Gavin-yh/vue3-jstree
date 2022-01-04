@@ -3,6 +3,7 @@ export interface TreeData {
   icon?: string;
   opended?: boolean;
   selected?: boolean;
+  delete?: boolean;
   isHover?: boolean;
   rename?: boolean;
   children?: Array<TreeData>;

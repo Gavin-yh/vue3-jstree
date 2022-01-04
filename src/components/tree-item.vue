@@ -1,6 +1,7 @@
 <template>
   <li
     class="tree-node"
+    v-if="!props.data.delete"
     :class="{
       'is-opend': props.data?.opended,
       'is-close': !props.data?.opended,

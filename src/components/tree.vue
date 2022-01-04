@@ -45,7 +45,6 @@ function formatItem(data: Array<TreeData>, anchorID: number) {
       text: item.text || "未知文件",
       opended: item.opended || false,
       selected: item.selected || false,
-      disabled: item.selected || false,
       children: item.children || [],
       icon: item.icon || "",
       rename: item.rename || false,
@@ -69,7 +68,6 @@ watch(
         text: item.text || "未知文件",
         opended: item.opended || false,
         selected: item.selected || false,
-        disabled: item.selected || false,
         children: item.children ? formatItem(item.children, TREE_ID) : [],
         icon: item.icon || "",
         rename: item.rename || false,
@@ -85,6 +83,18 @@ watch(
 
 //custom menu
 const menu: CreateMenu = new CreateMenu([
+  {
+    name: "新建目录",
+    onClick: function (e: Event) {
+      menu.hiddenMenu(e);
+    },
+  },
+  {
+    name: "新建文件",
+    onClick: function (e: Event) {
+      menu.hiddenMenu(e);
+    },
+  },
   {
     name: "重命名",
     onClick: function (e: Event) {
@@ -102,6 +112,8 @@ const menu: CreateMenu = new CreateMenu([
     name: "删除",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
+
+      targetTree.value.delete = !targetTree.value.delete;
     },
   },
 ]);
