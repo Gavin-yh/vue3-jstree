@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:nocheck": "vite build",
     "preview": "vite preview",
     "format": "prettier --write",
     "prettier": "prettier --ignore-path .gitignore --write \"src/**/*.+(ts|tsx|vue)\"",
