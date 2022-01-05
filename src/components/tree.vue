@@ -20,7 +20,7 @@ export default {
 <script setup lang="ts">
 import { ref, watch, Ref, nextTick } from "vue";
 import TreeItem from "./tree-item.vue";
-import { TreeData, innerTreeData } from "../util/index";
+import { TreeData, innerTreeData } from "../util/type";
 import CreateMenu from "../util/createMenu";
 import Emit from "../util/event";
 
@@ -37,7 +37,7 @@ const treeData: Ref<Array<innerTreeData>> = ref([]);
 const targetTree: Ref<innerTreeData> = ref({} as innerTreeData);
 
 // format tree child data
-function formatItem(data: Array<TreeData>, anchorID: number) {
+function formatItem(data: Array<TreeData>, anchorID: string): innerTreeData[] {
   return data.map((item) => {
     const newData = {
       id: TREE_ID++,
@@ -45,14 +45,12 @@ function formatItem(data: Array<TreeData>, anchorID: number) {
       text: item.text || "未知文件",
       opended: item.opended || false,
       selected: item.selected || false,
-      children: item.children || [],
+      children: item.children
+        ? formatItem(item.children, `${anchorID}-${TREE_ID - 1}`)
+        : undefined,
       icon: item.icon || "",
       rename: item.rename || false,
     };
-
-    if (item.children) {
-      newData.children = formatItem(item.children, anchorID);
-    }
 
     return newData;
   });
@@ -68,7 +66,9 @@ watch(
         text: item.text || "未知文件",
         opended: item.opended || false,
         selected: item.selected || false,
-        children: item.children ? formatItem(item.children, TREE_ID) : [],
+        children: item.children
+          ? formatItem(item.children, `${TREE_ID - 1}`)
+          : undefined,
         icon: item.icon || "",
         rename: item.rename || false,
       };
@@ -81,18 +81,53 @@ watch(
   }
 );
 
+const dir = {
+  id: TREE_ID++,
+  text: "未知文件",
+  opended: false,
+  selected: false,
+  children: [],
+  icon: "",
+  rename: true,
+};
+
+const file = {
+  id: TREE_ID++,
+  text: "未知文件",
+  opended: false,
+  selected: false,
+  icon: "",
+  rename: true,
+};
+
+function inputAutoFocus(treeID: number) {
+  nextTick(() => {
+    const input = document.getElementById(`${treeID}`);
+
+    input?.focus();
+  });
+}
+
 //custom menu
 const menu: CreateMenu = new CreateMenu([
   {
     name: "新建目录",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
+
+      targetTree.value.children?.push(dir);
+
+      inputAutoFocus(dir.id);
     },
   },
   {
     name: "新建文件",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
+
+      targetTree.value.children?.push(file);
+
+      inputAutoFocus(file.id);
     },
   },
   {
@@ -101,11 +136,7 @@ const menu: CreateMenu = new CreateMenu([
       menu.hiddenMenu(e);
       targetTree.value.rename = !targetTree.value.rename;
 
-      nextTick(() => {
-        const input = document.getElementById(`${targetTree.value.id}`);
-
-        input?.focus();
-      });
+      inputAutoFocus(targetTree.value.id);
     },
   },
   {

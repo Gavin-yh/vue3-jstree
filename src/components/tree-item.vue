@@ -21,8 +21,8 @@
     </div>
     <i
       :class="{
-        'tree-anchor': props.data?.children,
-        'tree-node__icon': props.data?.children?.length,
+        'tree-anchor': isFolder,
+        'tree-node__icon': isFolder,
       }"
       role="presentation"
     ></i>
@@ -37,7 +37,7 @@
       <i
         class="tree-node__icon"
         :class="{
-          'no-filder': !props.data?.children?.length,
+          'no-filder': !isFolder,
         }"
         role="presentation"
       ></i>
@@ -75,7 +75,7 @@ export default {
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { innerTreeData } from "../util/index";
+import { innerTreeData } from "../util/type";
 import CreateMenu from "../util/createMenu";
 import Emit from "../util/event";
 
@@ -87,7 +87,7 @@ const props = defineProps<{
 const emit = defineEmits([""]);
 
 const isFolder = computed(() => {
-  return props.data.children && props.data.children.length;
+  return props.data.children;
 });
 
 function onNodeCLick(e: Event, data: innerTreeData) {

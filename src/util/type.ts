@@ -11,4 +11,5 @@ export interface TreeData {
 
 export interface innerTreeData extends TreeData {
   id: number;
+  anchorID?: string;
 }
