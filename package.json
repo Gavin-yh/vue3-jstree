@@ -44,5 +44,22 @@
     "__tests__/**/*.{js,ts,tsx,vue}": [
       "npm run test"
     ]
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    },
+    "git": {
+      "requireCleanWorkingDir": false,
+      "requireBranch": "master",
+      "commit": true
+    },
+    "npm": {
+      "publish": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Gavin-yh/vue3-jstree.git"
   }
 }
