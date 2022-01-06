@@ -1,6 +1,7 @@
 {
   "name": "vue3-jstree",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
