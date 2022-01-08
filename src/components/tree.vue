@@ -214,7 +214,7 @@ ul {
     display: v-bind(selectBarDisplay);
     content: "";
     width: 100%;
-    height: 24px;
+    height: 22px;
     position: absolute;
     top: calc(v-bind(selectBarTop) * 1px);
     left: 0;
