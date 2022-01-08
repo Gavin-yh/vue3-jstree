@@ -10,15 +10,13 @@
     @click.stop="(e) => onNodeCLick(e, props.data)"
     @mouseover.stop="props.data.isHover = !props.data.isHover"
     @mouseout.stop="props.data.isHover = !props.data.isHover"
-    @contextmenu.stop="(e) => onContextmenu(e, props.data)"
+    @contextmenu.stop="(e) => onContextmenu(e)"
   >
     <div
       role="presentation"
       class="tree-node__background"
       v-if="props.data.isHover"
-    >
-      &nbsp;
-    </div>
+    ></div>
     <i
       :class="{
         'tree-anchor': isFolder,
@@ -31,7 +29,6 @@
       :class="{
         'tree-anchor': true,
         'tree-selected': props.data?.selected,
-        'tree-hovered': props.data?.isHover,
       }"
     >
       <i
@@ -74,7 +71,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, Ref, ref } from "vue";
+import { isEmpty, isEqual } from "lodash-es";
 import { innerTreeData } from "../util/type";
 import CreateMenu from "../util/createMenu";
 import Emit from "../util/event";
@@ -86,22 +84,45 @@ const props = defineProps<{
 
 const emit = defineEmits([""]);
 
+// record previous node
+const prevNode: Ref<innerTreeData> = ref({} as innerTreeData);
+
+// record select node
+const selectNode: Ref<innerTreeData> = ref({} as innerTreeData);
+
 const isFolder = computed(() => {
   return props.data.children;
 });
 
-function onNodeCLick(e: Event, data: innerTreeData) {
+function onNodeCLick(e: PointerEvent, data: innerTreeData) {
   data.opended = !data.opended;
+
+  if (!isEqual(data, prevNode.value)) {
+    data.selected = !data.selected;
+    selectNode.value = data;
+
+    // Only one node is allowed to be selected
+    if (isEmpty(prevNode.value)) {
+      prevNode.value.selected = false;
+    }
+
+    prevNode.value = data;
+  }
+
+  // close menu
   props.menu.hiddenMenu(e);
+
+  // toggle selectBar
+  Emit.emit("toggleSelectBar", e, data.selected ? "block" : "none");
 }
 
 // tree-item recurse self and to use emit bus
-function onContextmenu(e: MouseEvent, data: innerTreeData) {
-  Emit.emit("contextMenu", e, data);
+function onContextmenu(e: MouseEvent) {
+  Emit.emit("contextMenu", e, selectNode.value);
 }
 
 // rename
-function onRename(e: Event, data: innerTreeData) {
+function onRename(e: any, data: innerTreeData) {
   const value = e.srcElement!.value || "";
 
   data.text = value;
@@ -133,14 +154,11 @@ function onBlur(e: Event, data: innerTreeData) {
 
   &__background {
     width: 100%;
+    height: 24px;
     background: #eee;
     position: absolute;
     left: 0;
     z-index: -1;
-
-    &--select {
-      background: #000;
-    }
   }
 
   &__icon {
@@ -174,13 +192,10 @@ function onBlur(e: Event, data: innerTreeData) {
 
 .tree-anchor {
   background-position: 220px -8px;
+  display: inline-block;
 }
 
 .no-filder {
   background-position: 220px -71px;
-}
-
-.tree-anchor {
-  display: inline-block;
 }
 </style>

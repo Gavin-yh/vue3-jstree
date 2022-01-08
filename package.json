@@ -14,7 +14,9 @@
     "release-it": "release-it"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.5",
     "eventemitter3": "^4.0.7",
+    "lodash-es": "^4.17.21",
     "vue": "^3.2.25"
   },
   "devDependencies": {

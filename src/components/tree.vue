@@ -30,6 +30,10 @@ const props = defineProps<{
   data: Array<TreeData>;
 }>();
 
+// It is used to calculate the top distance when the node is selected and display the status
+const selectBarTop: Ref<number> = ref(0);
+const selectBarDisplay: Ref<string> = ref("none");
+
 // formatted tree data
 const treeData: Ref<Array<innerTreeData>> = ref([]);
 
@@ -158,8 +162,15 @@ function onContextmenu(e: MouseEvent, data: innerTreeData) {
   menu.showMenu(e);
 }
 
+// toggle selectBar and record previous node
+function toggleSelectBar(e: any, display: string) {
+  selectBarTop.value = e.target!.offsetTop;
+  selectBarDisplay.value = display;
+}
+
 // emit event
 Emit.on("contextMenu", onContextmenu);
+Emit.on("toggleSelectBar", toggleSelectBar);
 </script>
 
 <style lang="scss">
@@ -198,5 +209,17 @@ ul {
 <style scoped lang="scss">
 .tree {
   position: relative;
+
+  &::after {
+    display: v-bind(selectBarDisplay);
+    content: "";
+    width: 100%;
+    height: 24px;
+    position: absolute;
+    top: calc(v-bind(selectBarTop) * 1px);
+    left: 0;
+    z-index: -1;
+    background: #a5a5a5;
+  }
 }
 </style>
