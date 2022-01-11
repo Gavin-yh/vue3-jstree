@@ -7,7 +7,9 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue";
 import { TreeData } from "./util/type";
-import VTree from "./components/tree.vue";
+// import VTree from "./components/tree.vue";
+import { VTree } from "../dist/index.js";
+import "../dist/style.css";
 
 const data: Ref<Array<TreeData>> = ref([
   {
