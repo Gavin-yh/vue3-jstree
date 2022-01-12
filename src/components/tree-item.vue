@@ -94,7 +94,7 @@ const isFolder = computed(() => {
   return props.data.children;
 });
 
-function onNodeCLick(e: PointerEvent, data: innerTreeData) {
+function onNodeCLick(e: MouseEvent, data: innerTreeData) {
   data.opended = !data.opended;
 
   if (!isEqual(data, prevNode.value)) {

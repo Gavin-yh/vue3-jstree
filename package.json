@@ -1,7 +1,9 @@
 {
   "name": "vue3-jstree",
-  "version": "1.0.6",
+  "version": "1.0.8",
+  "description": "vue3版本的树形目录结构， A tree component for vue3",
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
