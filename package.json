@@ -4,6 +4,7 @@
   "description": "vue3版本的树形目录结构， A tree component for vue3",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
