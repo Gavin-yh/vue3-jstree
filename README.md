@@ -62,7 +62,7 @@ index.vue template中使用v-tree
 </template>
 ```
 
-index.vue 引入组件，和对应的样式
+index.vue 引入组件，和对应的样式(全局引入样式)
 
 ```ts
 <script setup>
