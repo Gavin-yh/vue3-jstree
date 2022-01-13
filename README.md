@@ -15,7 +15,9 @@
   <p align="center">
     vue3版本的树形目录结构， A tree component for vue3
     <br />
-    <a href="https://gavin-yh.github.io/vue3-jstree/"><strong>例子</strong></a>
+    <a href="https://gavin-yh.github.io/vue3-jstree/"><strong>在线例子</strong></a>
+    <br />
+    <a href="https://github.com/Gavin-yh/vue3-jstree/tree/master/example"><strong>example 代码</strong></a>
     <br />
   </p>
 </p>
@@ -25,7 +27,7 @@
 ##  介绍
 vue3-jstree是基于vue3的开发的树形文件组件。
 
-目前不支持vue2
+目前不支持在vue2.x版本中使用。
 
 <img src="./file.png" width="100%" align=center />
 
@@ -34,6 +36,7 @@ vue3-jstree是基于vue3的开发的树形文件组件。
 
 ## 安装和使用
 ### 初始化vue项目
+> 这里的例子是使用vite创建的项目，如果想使用vue-cli创建创建项目，必须选vue3版本，目前不支持vue2.x。也可以看example里面的示例。
 ```bash
 # npm 6.x
 npm init vite@latest my-vue-app --template vue
@@ -148,4 +151,4 @@ const data = [
 
 <div>欢迎一起交流</div>
 
-<img src="./my.png" width="100%" align=center />
+<img src="./my.png" width="200px" align=center />

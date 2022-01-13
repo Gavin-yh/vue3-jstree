@@ -1,7 +1,13 @@
 .husky/
 .github/
 .vscode
-doc/
 test/
 src/
-node_modules
+node_modules/
+example/
+scripts/
+babel.config.js
+index.html
+jest.config.js
+tsconfig.json
+vite.config.ts
