@@ -1,6 +1,5 @@
 export interface TreeData {
   text: string;
-  icon?: string;
   opended?: boolean;
   selected?: boolean;
   delete?: boolean;

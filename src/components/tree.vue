@@ -28,6 +28,8 @@ let TREE_ID: number = 1;
 
 const props = defineProps<{
   data: Array<TreeData>;
+  highlightCurrent?: boolean;
+  defaultExpandAll?: boolean;
 }>();
 
 // It is used to calculate the top distance when the node is selected and display the status
@@ -47,12 +49,11 @@ function formatItem(data: Array<TreeData>, anchorID: string): innerTreeData[] {
       id: TREE_ID++,
       anchorID,
       text: item.text || "未知文件",
-      opended: item.opended || false,
+      opended: props.defaultExpandAll || item.opended || false,
       selected: item.selected || false,
       children: item.children
         ? formatItem(item.children, `${anchorID}-${TREE_ID - 1}`)
         : undefined,
-      icon: item.icon || "",
       rename: item.rename || false,
     };
 
@@ -68,12 +69,11 @@ watch(
       const data = {
         id: TREE_ID++,
         text: item.text || "未知文件",
-        opended: item.opended || false,
+        opended: props.defaultExpandAll || item.opended || false,
         selected: item.selected || false,
         children: item.children
           ? formatItem(item.children, `${TREE_ID - 1}`)
           : undefined,
-        icon: item.icon || "",
         rename: item.rename || false,
       };
       return data;
@@ -91,7 +91,6 @@ const dir = {
   opended: false,
   selected: false,
   children: [],
-  icon: "",
   rename: true,
 };
 
@@ -100,7 +99,6 @@ const file = {
   text: "未知文件",
   opended: false,
   selected: false,
-  icon: "",
   rename: true,
 };
 
@@ -162,7 +160,7 @@ function onContextmenu(e: MouseEvent, data: innerTreeData) {
   menu.showMenu(e);
 }
 
-// toggle selectBar and record previous node
+// toggle selectBar
 function toggleSelectBar(e: any, display: string) {
   selectBarTop.value = e.target!.offsetTop;
   selectBarDisplay.value = display;
@@ -170,7 +168,11 @@ function toggleSelectBar(e: any, display: string) {
 
 // emit event
 Emit.on("contextMenu", onContextmenu);
-Emit.on("toggleSelectBar", toggleSelectBar);
+
+// Highlight the currently selected node
+if (props.highlightCurrent) {
+  Emit.on("toggleSelectBar", toggleSelectBar);
+}
 </script>
 
 <style lang="scss">

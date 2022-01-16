@@ -1,15 +1,13 @@
 <template>
   <div style="width: 300px; border: 1px solid #eee">
-    <v-tree :data="data" highlight-current default-expand-all />
+    <v-tree :data="data" />
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, Ref } from "vue";
-import { TreeData } from "./util/type";
-import VTree from "./components/tree.vue";
+<script setup>
+import { ref } from 'vue';
 
-const data: Ref<Array<TreeData>> = ref([
+const data = ref([
   {
     text: "文件",
     children: [
@@ -58,8 +56,6 @@ const data: Ref<Array<TreeData>> = ref([
     children: [],
   },
 ]);
-
-console.log(VTree.name);
 </script>
 
 <style>
@@ -67,7 +63,6 @@ console.log(VTree.name);
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
