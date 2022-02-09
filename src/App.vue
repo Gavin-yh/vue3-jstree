@@ -55,6 +55,9 @@ const data: Ref<Array<TreeData>> = ref([
   },
   {
     text: "文件",
+  },
+  {
+    text: "文件",
     children: [],
   },
 ]);
@@ -68,7 +71,6 @@ console.log(VTree.name);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
 }
 </style>

@@ -23,6 +23,7 @@ import TreeItem from "./tree-item.vue";
 import { TreeData, innerTreeData } from "../util/type";
 import CreateMenu from "../util/createMenu";
 import Emit from "../util/event";
+import { getSortData } from "../util/tool";
 
 let TREE_ID: number = 1;
 
@@ -44,7 +45,8 @@ const targetTree: Ref<innerTreeData> = ref({} as innerTreeData);
 
 // format tree child data
 function formatItem(data: Array<TreeData>, anchorID: string): innerTreeData[] {
-  return data.map((item) => {
+  // To be optimized
+  const newData = data.map((item) => {
     const newData = {
       id: TREE_ID++,
       anchorID,
@@ -59,13 +61,16 @@ function formatItem(data: Array<TreeData>, anchorID: string): innerTreeData[] {
 
     return newData;
   });
+
+  return getSortData(newData);
 }
 
 // watch props.data and format
 watch(
   () => props.data,
   (data) => {
-    treeData.value = data.map((item) => {
+    // To be optimized
+    const newData = data.map((item) => {
       const data = {
         id: TREE_ID++,
         text: item.text || "未知文件",
@@ -78,6 +83,8 @@ watch(
       };
       return data;
     });
+
+    treeData.value = getSortData(newData);
   },
   {
     deep: true,
