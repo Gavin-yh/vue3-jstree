@@ -18,6 +18,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { findIndex } from "lodash-es";
 import { ref, watch, Ref, nextTick } from "vue";
 import TreeItem from "./tree-item.vue";
 import { TreeData, innerTreeData } from "../util/type";
@@ -92,23 +93,6 @@ watch(
   }
 );
 
-const dir = {
-  id: TREE_ID++,
-  text: "未知文件",
-  opended: false,
-  selected: false,
-  children: [],
-  rename: true,
-};
-
-const file = {
-  id: TREE_ID++,
-  text: "未知文件",
-  opended: false,
-  selected: false,
-  rename: true,
-};
-
 function inputAutoFocus(treeID: number) {
   nextTick(() => {
     const input = document.getElementById(`${treeID}`);
@@ -122,9 +106,23 @@ const menu: CreateMenu = new CreateMenu([
   {
     name: "新建目录",
     onClick: function (e: Event) {
+      const dir = {
+        id: TREE_ID++,
+        text: "未知文件",
+        opended: false,
+        selected: false,
+        children: [],
+        rename: true,
+      };
+
       menu.hiddenMenu(e);
 
-      targetTree.value.children?.push(dir);
+      // Insert by location
+      const firstFileIndex = findIndex(
+        targetTree.value.children,
+        (tree) => !tree.children
+      );
+      targetTree.value.children?.splice(firstFileIndex, 0, dir);
 
       inputAutoFocus(dir.id);
     },
@@ -132,6 +130,14 @@ const menu: CreateMenu = new CreateMenu([
   {
     name: "新建文件",
     onClick: function (e: Event) {
+      const file = {
+        id: TREE_ID++,
+        text: "未知文件",
+        opended: false,
+        selected: false,
+        rename: true,
+      };
+
       menu.hiddenMenu(e);
 
       targetTree.value.children?.push(file);
