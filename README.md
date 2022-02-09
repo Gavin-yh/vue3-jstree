@@ -157,7 +157,12 @@ const data = [
 ```
 ## 交流
 <br />
-
 <div>欢迎一起交流</div>
+<br />
 
-<img src="./my.png" width="200px" align=center />
+<p><b>公众号</b>：不定期输出技术文章，个人的经历分享，做开源的感悟等等，欢迎关注一起交流</p>
+<img src="./qrcode.png" width="200px" align=center />
+
+<br />
+
+<p><b>微信号</b>：联系我，可以关注公众号，点击关于 -> 与我联系，获取微信号。感兴趣的小伙伴可以一起沟通交流，一起学习，一起进步。</p>
