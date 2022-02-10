@@ -2,6 +2,8 @@
   "name": "vue3-jstree",
   "version": "1.0.8",
   "description": "vue3版本的树形目录结构， A tree component for vue3",
+  "author": "Gavin",
+  "homepage": "https://github.com/Gavin-yh/vue3-jstree",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "private": true,
@@ -66,5 +68,8 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:Gavin-yh/vue3-jstree.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gavin-yh/vue3-jstree/issues"
   }
 }
