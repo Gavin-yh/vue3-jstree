@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 300px; border: 1px solid #eee">
+  <div style="width: 100%; border: 1px solid #eee">
     <v-tree :data="data" highlight-current default-expand-all />
   </div>
 </template>

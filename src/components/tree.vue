@@ -28,6 +28,11 @@ import { getSortData } from "../util/tool";
 
 let TREE_ID: number = 1;
 
+/**
+ * data 数据
+ * highlightCurrent 是否高亮当前选择的tree item
+ * defaultExpandAll 是否全展开
+ */
 const props = defineProps<{
   data: Array<TreeData>;
   highlightCurrent?: boolean;
@@ -105,6 +110,7 @@ function inputAutoFocus(treeID: number) {
 const menu: CreateMenu = new CreateMenu([
   {
     name: "新建目录",
+    type: "folder",
     onClick: function (e: Event) {
       const dir = {
         id: TREE_ID++,
@@ -129,6 +135,7 @@ const menu: CreateMenu = new CreateMenu([
   },
   {
     name: "新建文件",
+    type: "folder",
     onClick: function (e: Event) {
       const file = {
         id: TREE_ID++,
@@ -147,6 +154,7 @@ const menu: CreateMenu = new CreateMenu([
   },
   {
     name: "重命名",
+    type: "all",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
       targetTree.value.rename = !targetTree.value.rename;
@@ -156,6 +164,7 @@ const menu: CreateMenu = new CreateMenu([
   },
   {
     name: "删除",
+    type: "all",
     onClick: function (e: Event) {
       menu.hiddenMenu(e);
 
@@ -170,7 +179,8 @@ function onContextmenu(e: MouseEvent, data: innerTreeData) {
 
   // record click file data
   targetTree.value = data;
-  menu.showMenu(e);
+
+  data.children ? menu.showMenu(e, "floder") : menu.showMenu(e, "file");
 }
 
 // toggle selectBar
