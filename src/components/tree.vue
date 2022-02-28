@@ -244,7 +244,7 @@ ul {
     top: calc(v-bind(selectBarTop) * 1px);
     left: 0;
     z-index: -1;
-    background: #a5a5a5;
+    background: #e7e6e6;
   }
 }
 </style>
