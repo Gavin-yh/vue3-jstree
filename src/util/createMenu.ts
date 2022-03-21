@@ -39,7 +39,7 @@ export default class CreateMenu {
   /**
    * 菜单显示
    */
-  showMenu(e: MouseEvent, flag: "floder" | "file") {
+  showMenu(e: MouseEvent, flag: any) {
     let target = {} as HTMLElement;
 
     if (flag === "floder") {
